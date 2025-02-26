@@ -13,7 +13,11 @@ def index():
     photo_dir = os.path.join(app.static_folder, 'photos')
     photos = [f for f in os.listdir(photo_dir) if f.endswith(('.jpg', '.jpeg', '.png', '.webp'))]
     photos.sort()
-    return render_template('index.html', photos=photos)
+    
+    # Get Web3Forms key from environment variable
+    web3forms_key = os.environ.get('WEB3FORMS_KEY', '')
+    
+    return render_template('index.html', photos=photos, web3forms_key=web3forms_key)
 
 @app.route('/view/<filename>')
 def view_image(filename):
