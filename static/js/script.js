@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageGroups = document.querySelectorAll('.image-trio');
     let currentIndex = 0;
     const isMobile = window.innerWidth <= 768;
-    let imageWidth;
     let autoScrollInterval;
     let interactionTimeout;
     const autoScrollDelay = 5000;
@@ -13,21 +12,59 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
 
-    function preloadImages() {
-        const imagesToPreload = document.querySelectorAll('.image-wrapper img'); // Select all carousel images
-        imagesToPreload.forEach(img => {
-            const tempImage = new Image(); // Create a new Image object
-            tempImage.src = img.src;      // Set its src to the image's src - this starts the download
-            tempImage.loading = 'eager'; // Force eager loading for preloading
-
-            tempImage.onload = () => {
-                console.log(`Preloaded image: ${img.src}`); // Log when image is loaded
-            };
-            tempImage.onerror = () => {
-                console.error(`Failed to preload image: ${img.src}`); // Log if preloading fails
-            };
+    // SOLUTION 4: Targeted preloading strategy
+    function preloadVisibleAndAdjacentImages() {
+        if (!carousel) return;
+        
+        // Get all image trios after the carousel is initialized
+        const allTrios = carousel.querySelectorAll('.image-trio');
+        if (!allTrios.length) return;
+        
+        // Calculate which trios to preload (current, next, and previous)
+        // Add 1 because we prepend a clone to the carousel, so indices are shifted
+        const visibleIndex = currentIndex;
+        const nextIndex = (visibleIndex + 1) % allTrios.length;
+        const prevIndex = (visibleIndex - 1 + allTrios.length) % allTrios.length;
+        
+        // Only target specific images to preload
+        const priorityImages = [
+            ...allTrios[visibleIndex].querySelectorAll('img'),
+            ...allTrios[nextIndex].querySelectorAll('img'),
+            ...allTrios[prevIndex].querySelectorAll('img')
+        ];
+        
+        console.log(`Prioritizing preload for trio indices: ${visibleIndex}, ${nextIndex}, ${prevIndex}`);
+        
+        // Preload these priority images first
+        priorityImages.forEach(img => {
+            if (!img.dataset.preloaded) {
+                const tempImage = new Image();
+                tempImage.src = img.src;
+                tempImage.loading = 'eager';
+                
+                tempImage.onload = () => {
+                    img.dataset.preloaded = 'true';
+                    console.log(`Priority preloaded: ${img.src}`);
+                };
+            }
         });
-        console.log('Preloading initiated for all carousel images.'); // Log preloading start
+        
+        // Then queue up the rest with lower priority
+        setTimeout(() => {
+            const remainingImages = [...carousel.querySelectorAll('img')].filter(
+                img => !img.dataset.preloaded
+            );
+            
+            remainingImages.forEach(img => {
+                const tempImage = new Image();
+                tempImage.src = img.src;
+                tempImage.loading = 'lazy';
+                
+                tempImage.onload = () => {
+                    img.dataset.preloaded = 'true';
+                };
+            });
+        }, 1000); // Delay loading of non-priority images
     }
 
     function initCarousel() {
@@ -47,40 +84,55 @@ document.addEventListener('DOMContentLoaded', function() {
         carousel.appendChild(currentImageGroups[0].cloneNode(true));
         carousel.insertBefore(currentImageGroups[currentImageGroups.length - 1].cloneNode(true), carousel.firstChild);
 
+        // Add hardware acceleration hints
+        carousel.style.willChange = 'transform';
+        carousel.style.backfaceVisibility = 'hidden';
+        carousel.style.webkitBackfaceVisibility = 'hidden';
+        
         if (isMobile) {
-            imageWidth = carousel.offsetWidth; // Get width after DOM is ready and mobile styles applied
-
-            // Set loading="eager" attribute for carousel images on mobile (still doing this)
+            // Get carousel images and add hardware acceleration properties
             const carouselImages = carousel.querySelectorAll('.image-wrapper img');
             carouselImages.forEach(img => {
-                img.setAttribute('loading', 'eager'); // Force eager loading on mobile
+                img.setAttribute('loading', 'eager');
+                img.style.backfaceVisibility = 'hidden';
+                img.style.webkitBackfaceVisibility = 'hidden';
             });
         }
-
+        
         // Adjust initial position
         currentIndex = 1;
         updateCarousel(false);
+        
+        // Preload visible and adjacent images after carousel is initialized
+        preloadVisibleAndAdjacentImages();
 
         startAutoScroll(); // Start auto-scroll on initialization
     }
 
+    // SOLUTION 3: Optimized carousel transition with translate3d
     function updateCarousel(animate = true) {
         if (!carousel) return;
         
+        // Use translate3d instead of translateX for hardware acceleration
+        const offset = currentIndex * -100;
+        
         if (!animate) {
             carousel.style.transition = 'none';
-        }
-        let offset;
-        if (isMobile) {
-            offset = currentIndex * -100; // Full width of one image group in mobile (100%)
         } else {
-            offset = currentIndex * -100; // Original desktop logic (100% per trio)
+            // Simpler timing function for better performance
+            carousel.style.transition = 'transform 0.5s ease-out';
         }
-        carousel.style.transform = `translateX(${offset}%)`;
+        
+        // Force GPU acceleration with translate3d
+        carousel.style.transform = `translate3d(${offset}%, 0, 0)`;
+        
         if (!animate) {
             carousel.offsetHeight; // Force reflow
-            carousel.style.transition = 'transform 0.8s cubic-bezier(0.6, 0, 0.2, 1)';
+            carousel.style.transition = 'transform 0.5s ease-out';
         }
+        
+        // Preload images for the new position
+        preloadVisibleAndAdjacentImages();
     }
 
     function nextTrio() {
@@ -92,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 currentIndex = 1;
                 updateCarousel(false);
-            }, 800);
+            }, 500); // Match the transition duration
         }
     }
 
@@ -105,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 currentIndex = imageGroups.length;
                 updateCarousel(false);
-            }, 800);
+            }, 500); // Match the transition duration
         }
     }
 
@@ -140,35 +192,95 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        // Improved touch handling with better performance
         let touchStartX = 0;
+        let touchStartTime = 0;
+        let isSwiping = false;
+        
         carousel.addEventListener('touchstart', e => {
             touchStartX = e.changedTouches[0].screenX;
+            touchStartTime = Date.now();
+            isSwiping = true;
+            
+            // Pause animations during touch
+            carousel.style.transition = 'none';
+            
+            // Signal we're handling this touch
             resetAutoScrollTimer();
-        });
+        }, { passive: true });
+        
+        carousel.addEventListener('touchmove', e => {
+            if (!isSwiping) return;
+            
+            // Calculate how far we've moved
+            const touchCurrentX = e.changedTouches[0].screenX;
+            const diff = touchCurrentX - touchStartX;
+            
+            // If significant drag, prevent default to avoid page scrolling
+            if (Math.abs(diff) > 10) {
+                e.preventDefault();
+            }
+            
+            // Calculate percentage to move based on drag distance
+            // Constrain movement to avoid overscrolling
+            const percentMove = Math.max(Math.min(diff / window.innerWidth * 100, 50), -50);
+            const offset = (currentIndex * -100) + percentMove;
+            
+            // Apply the transform directly
+            carousel.style.transform = `translate3d(${offset}%, 0, 0)`;
+        }, { passive: false });
 
         carousel.addEventListener('touchend', e => {
+            if (!isSwiping) return;
+            isSwiping = false;
+            
+            // Restore transitions
+            carousel.style.transition = 'transform 0.5s ease-out';
+            
             const touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 50) nextTrio();
-            else if (touchEndX - touchStartX > 50) prevTrio();
+            const touchEndTime = Date.now();
+            
+            const diff = touchEndX - touchStartX;
+            const timeDiff = touchEndTime - touchStartTime;
+            
+            // Detect swipe based on distance and speed
+            // Fast short swipes count too
+            const isSwipe = Math.abs(diff) > 50 || (Math.abs(diff) > 20 && timeDiff < 300);
+            
+            if (isSwipe) {
+                if (diff < 0) nextTrio();
+                else prevTrio();
+            } else {
+                // Snap back to current position if not a swipe
+                updateCarousel();
+            }
+            
             resetAutoScrollTimer();
-        });
+        }, { passive: true });
 
         // Make sure links in carousel work properly
         const imageLinks = document.querySelectorAll('.image-wrapper a');
         imageLinks.forEach(link => {
             link.addEventListener('click', (e) => {
+                // Only treat as a click if we're not in a swipe
+                if (isSwiping) {
+                    e.preventDefault();
+                }
                 // Don't intercept link clicks for navigation
                 e.stopPropagation();
             });
         });
 
-        // Call preloadImages BEFORE initCarousel to start preloading immediately
-        preloadImages();
+        // Initialize the carousel
         initCarousel();
         
-        // Only add resize listener if carousel exists
+        // Debounce the resize handler for better performance
+        let resizeTimeout;
         window.addEventListener('resize', () => {
-            initCarousel();
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                initCarousel();
+            }, 250);
         });
     }
 
