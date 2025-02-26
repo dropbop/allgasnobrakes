@@ -9,11 +9,11 @@
     --spacing-unit: 8px;
     --container-padding: clamp(var(--spacing-unit), 5vw, 80px);
     --transition-smooth: cubic-bezier(0.6, 0, 0.2, 1);
-    /* Add new root variables */
     --mobile-header-height: 60px;
     --mobile-nav-height: 64px;
 }
 
+/* Global Reset */
 * {
     margin: 0;
     padding: 0;
@@ -30,16 +30,16 @@ body {
 
 /* Header & Navigation */
 header {
-    position: fixed; /* ✅ Corrected back to fixed for desktop */
+    position: fixed; /* Desktop fixed header */
     top: 0;
     left: 0;
     width: 100%;
-    padding: calc(var(--spacing-unit) * 3); /* Reverted to original padding */
+    padding: calc(var(--spacing-unit) * 3);
     z-index: 100;
     background: linear-gradient(180deg, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0) 100%);
     backdrop-filter: blur(10px);
-    display: flex; /* Keep flex for desktop layout */
-    justify-content: space-between; /* Keep space-between for desktop */
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -101,8 +101,8 @@ nav a:hover {
 
 /* Carousel */
 .carousel-container {
-    height: calc(100vh - var(--mobile-header-height)); /* Recalculated height */
-    padding-top: var(--mobile-header-height); /* Add padding to avoid overlap */
+    height: calc(100vh - var(--mobile-header-height));
+    padding-top: var(--mobile-header-height);
     position: relative;
     overflow: hidden;
 }
@@ -110,7 +110,7 @@ nav a:hover {
 .carousel {
     height: 100%;
     display: flex;
-    transition: transform 0.8s var(--transition-smooth); /* Reverted to original transition */
+    transition: transform 0.8s var(--transition-smooth);
 }
 
 .image-trio {
@@ -122,6 +122,7 @@ nav a:hover {
     padding: 0 var(--container-padding);
 }
 
+/* Image Wrapper Styles */
 .image-wrapper {
     position: relative;
     overflow: hidden;
@@ -138,6 +139,13 @@ nav a:hover {
     transition: transform 0.4s var(--transition-smooth);
 }
 
+.image-wrapper a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
 .image-wrapper:hover {
     transform: skewX(-5deg) scale(1);
 }
@@ -148,7 +156,7 @@ nav a:hover {
 
 /* Carousel Controls */
 .controls {
-    position: absolute; /* Change from fixed to absolute */
+    position: absolute;
     bottom: calc(var(--spacing-unit) * 4);
     left: 50%;
     transform: translateX(-50%);
@@ -224,65 +232,56 @@ nav a:hover {
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-  /* Adjust header for mobile */
-  header {
-    position: absolute; /* Keep absolute for mobile */
-    height: var(--mobile-header-height);
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Justify content center for mobile header */
-  }
-
-  /* Modify site title for mobile */
-  .site-title {
-    font-size: 1.5rem;
-    text-align: center;
-    /* transform: none; Removed to keep skew on mobile */
-  }
-
-  /* Hide desktop nav */
-  nav {
-    display: none;
-  }
-
-  /* Hide controls on mobile */
-  .controls {
-    display: none; /* Hide controls on mobile */
-  }
-
-  /* Adjust carousel for mobile */
-  .carousel-container {
-    height: calc(100vh - var(--mobile-header-height)); /* Recalculated height */
-    padding-top: var(--mobile-header-height); /* Add padding to avoid overlap */
-  }
-
-  .image-trio {
-    grid-template-columns: 1fr;
-    padding: 0; /* Remove padding on mobile */
-  }
-
-  .image-wrapper {
-    transform: none;
-    height: 100%;
-  }
-
-  .image-wrapper img {
-    transform: none;
-  }
-
-  /* Remove hover effect on mobile */
-  .image-wrapper:hover {
-    transform: none; /* Reset transform on mobile hover */
-  }
-
-  .image-wrapper:hover img {
-    transform: none; /* Reset image transform on mobile hover */
-  }
-
-
-  /* Mobile contact section adjustments */
-  .contact {
-    padding: 32px 16px;
-  }
+    /* Header & Navigation Adjustments */
+    header {
+        position: absolute;
+        height: var(--mobile-header-height);
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .site-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    nav,
+    .controls {
+        display: none;
+    }
+    
+    .carousel-container {
+        height: calc(100vh - var(--mobile-header-height));
+        padding-top: var(--mobile-header-height);
+    }
+    
+    .image-trio {
+        grid-template-columns: 1fr;
+        padding: 0;
+    }
+    
+    /* Image Wrapper Mobile Overrides */
+    .image-wrapper,
+    .image-wrapper:hover {
+        transform: none;
+    }
+    
+    .image-wrapper img,
+    .image-wrapper:hover img {
+        transform: none;
+    }
+    
+    .image-wrapper a {
+        /* Maintain clickable area */
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* Mobile Contact Section */
+    .contact {
+        padding: 32px 16px;
+    }
 }
