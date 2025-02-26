@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function initCarousel() {
+        if (!carousel || !imageGroups.length) return;
+        
         carousel.innerHTML = ''; // Clear existing carousel
         currentIndex = 0;
 
@@ -44,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clone first and last groups for smooth infinite scroll (do this AFTER re-appending)
         carousel.appendChild(currentImageGroups[0].cloneNode(true));
         carousel.insertBefore(currentImageGroups[currentImageGroups.length - 1].cloneNode(true), carousel.firstChild);
-
 
         if (isMobile) {
             imageWidth = carousel.offsetWidth; // Get width after DOM is ready and mobile styles applied
@@ -64,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateCarousel(animate = true) {
+        if (!carousel) return;
+        
         if (!animate) {
             carousel.style.transition = 'none';
         }
@@ -123,19 +126,20 @@ document.addEventListener('DOMContentLoaded', function() {
         interactionTimeout = setTimeout(startAutoScroll, resumeAutoScrollDelay);
     }
 
-    if (prevButton && nextButton) {
-        prevButton.addEventListener('click', () => {
-            prevTrio();
-            resetAutoScrollTimer();
-        });
-
-        nextButton.addEventListener('click', () => {
-            nextTrio();
-            resetAutoScrollTimer();
-        });
-    }
-
     if (carousel) {
+        // Initialize carousel if it exists
+        if (prevButton && nextButton) {
+            prevButton.addEventListener('click', () => {
+                prevTrio();
+                resetAutoScrollTimer();
+            });
+
+            nextButton.addEventListener('click', () => {
+                nextTrio();
+                resetAutoScrollTimer();
+            });
+        }
+
         let touchStartX = 0;
         carousel.addEventListener('touchstart', e => {
             touchStartX = e.changedTouches[0].screenX;
@@ -161,13 +165,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Call preloadImages BEFORE initCarousel to start preloading immediately
         preloadImages();
         initCarousel();
-    }
-
-    window.addEventListener('resize', () => {
-        if (carousel) {
+        
+        // Only add resize listener if carousel exists
+        window.addEventListener('resize', () => {
             initCarousel();
-        }
-    });
+        });
+    }
 
     // ================= CONTACT FORM CODE =================
     const contactForm = document.getElementById('contactForm');
@@ -178,14 +181,32 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault(); // Prevent the form from submitting normally
             
             // Show pending message
-            formResult.textContent = "Sending your message...";
-            formResult.className = "form-result pending";
-            formResult.style.display = "block";
+            if (formResult) {
+                formResult.textContent = "Sending your message...";
+                formResult.className = "form-result pending";
+                formResult.style.display = "block";
+            }
             
+            // Get form data
             const formData = new FormData(contactForm);
             const object = Object.fromEntries(formData);
+            
+            // Check if access key is present and not empty
+            const accessKey = object.access_key;
+            if (!accessKey) {
+                console.error("Web3Forms access key is missing or empty");
+                if (formResult) {
+                    formResult.textContent = "Configuration error: Missing API key. Please contact the site administrator.";
+                    formResult.className = "form-result error";
+                }
+                return;
+            }
+            
+            // Debug log
+            console.log('Submitting form with payload:', object);
             const json = JSON.stringify(object);
             
+            // Submit to Web3Forms API
             fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: {
@@ -195,27 +216,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: json
             })
             .then(async (response) => {
-                let json = await response.json();
-                if (response.status == 200) {
-                    formResult.textContent = "Message sent successfully!";
-                    formResult.className = "form-result success";
-                } else {
-                    console.log(response);
-                    formResult.textContent = json.message || "Something went wrong!";
-                    formResult.className = "form-result error";
+                let json;
+                try {
+                    json = await response.json();
+                    console.log('Web3Forms API response:', json);
+                } catch (e) {
+                    console.error('Failed to parse API response', e);
+                    json = { message: "Failed to parse response" };
+                }
+                
+                if (formResult) {
+                    if (response.status == 200) {
+                        formResult.textContent = "Message sent successfully!";
+                        formResult.className = "form-result success";
+                        contactForm.reset();
+                    } else {
+                        console.error('Error response:', response.status, json);
+                        formResult.textContent = json.message || "Something went wrong!";
+                        formResult.className = "form-result error";
+                    }
                 }
             })
             .catch(error => {
-                console.log(error);
-                formResult.textContent = "Something went wrong. Please try again.";
-                formResult.className = "form-result error";
+                console.error('Fetch error:', error);
+                if (formResult) {
+                    formResult.textContent = "Network error. Please try again.";
+                    formResult.className = "form-result error";
+                }
             })
             .finally(function() {
-                contactForm.reset();
-                // Hide the message after 5 seconds
-                setTimeout(() => {
-                    formResult.style.display = "none";
-                }, 5000);
+                if (formResult) {
+                    // Hide the message after 5 seconds
+                    setTimeout(() => {
+                        formResult.style.display = "none";
+                    }, 5000);
+                }
             });
         });
     }
