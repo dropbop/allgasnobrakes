@@ -23,5 +23,9 @@ def view_image(filename):
 def get_photo(filename):
     return send_from_directory(os.path.join(app.static_folder, 'photos'), filename)
 
+# This is needed for Vercel
+app.config['STATIC_FOLDER'] = 'static'
+
+# For local development only
 if __name__ == "__main__":
     app.run(debug=False)
