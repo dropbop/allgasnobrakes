@@ -111,6 +111,9 @@ nav a:hover {
     height: 100%;
     display: flex;
     transition: transform 0.8s var(--transition-smooth);
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .image-trio {
@@ -137,6 +140,8 @@ nav a:hover {
     object-fit: cover;
     transform: skewX(5deg) scale(1.2);
     transition: transform 0.4s var(--transition-smooth);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .image-wrapper a {
