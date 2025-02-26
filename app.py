@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request, abort
+from flask import Flask, render_template, send_from_directory, request, abort, redirect, url_for
 import os
 
 # Define environment detection
@@ -10,6 +10,16 @@ app = Flask(__name__)
 def add_security_headers(response):
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     return response
+
+# 404 error handler - redirect to home page
+@app.errorhandler(404)
+def page_not_found(e):
+    # Log the error in development mode
+    if IS_DEVELOPMENT:
+        app.logger.error(f"404 error: {request.path}")
+    
+    # Redirect to the index page
+    return redirect(url_for('index'))
 
 @app.route('/')
 def index():
