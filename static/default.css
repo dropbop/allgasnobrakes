@@ -193,11 +193,16 @@ nav a:hover {
     overflow: hidden;
 }
 
+.contact-content {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 6);
+}
+
 .contact-info {
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing-unit) * 4);
-    margin-top: calc(var(--spacing-unit) * 6);
 }
 
 .contact-info p {
@@ -228,6 +233,149 @@ nav a:hover {
     height: 24px;
     color: var(--color-accent);
     margin-right: var(--spacing-unit);
+}
+
+/* Contact Form Styles */
+.contact-form-container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    position: relative;
+    display: inline-block;
+    padding-bottom: calc(var(--spacing-unit) * 1);
+    transform: skewX(-12deg);
+}
+
+.form-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    height: 3px;
+    background-color: var(--color-accent);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 3);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 1);
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.7);
+    transform: skewX(-8deg);
+    display: inline-block;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text);
+    padding: calc(var(--spacing-unit) * 2);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    transform: skewX(-3deg);
+    transition: all 0.3s var(--transition-smooth);
+}
+
+.contact-form input[type="text"]:focus,
+.contact-form input[type="email"]:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: skewX(-3deg) translateX(5px);
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.submit-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--color-text);
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transform: skewX(-8deg);
+    transition: all 0.3s var(--transition-smooth);
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1);
+    overflow: hidden;
+    position: relative;
+}
+
+.submit-button:hover {
+    background-color: var(--color-accent);
+}
+
+.submit-button span {
+    transform: skewX(8deg);
+}
+
+.submit-button svg {
+    transform: skewX(8deg);
+    transition: transform 0.3s var(--transition-smooth);
+}
+
+.submit-button:hover svg {
+    transform: skewX(8deg) translateX(5px);
+}
+
+.form-result {
+    padding: calc(var(--spacing-unit) * 2);
+    margin-top: calc(var(--spacing-unit) * 2);
+    font-weight: 500;
+    transform: skewX(-3deg);
+    display: none;
+}
+
+.form-result.success {
+    background-color: rgba(39, 174, 96, 0.2);
+    border-left: 3px solid #27ae60;
+    color: #2ecc71;
+    display: block;
+}
+
+.form-result.error {
+    background-color: rgba(231, 76, 60, 0.2);
+    border-left: 3px solid #e74c3c;
+    color: #e74c3c;
+    display: block;
+}
+
+.form-result.pending {
+    background-color: rgba(241, 196, 15, 0.2);
+    border-left: 3px solid #f1c40f;
+    color: #f1c40f;
+    display: block;
 }
 
 /* Mobile Responsiveness */
@@ -283,5 +431,14 @@ nav a:hover {
     /* Mobile Contact Section */
     .contact {
         padding: 32px 16px;
+    }
+    
+    .contact-form-container {
+        max-width: 100%;
+    }
+    
+    .submit-button {
+        width: 100%;
+        justify-content: center;
     }
 }
