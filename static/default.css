@@ -413,12 +413,12 @@ nav a:hover {
     /* Image Wrapper Mobile Overrides */
     .image-wrapper,
     .image-wrapper:hover {
-        transform: none !important; /* Remove skew completely on mobile */
+        transform: none;
     }
     
     .image-wrapper img,
     .image-wrapper:hover img {
-        transform: none !important; /* Remove all image transforms on mobile */
+        transform: none;
     }
     
     .image-wrapper a {
