@@ -29,9 +29,11 @@
                     {% for j in range(3) %}
                         {% if i + j < photos|length %}
                         <div class="image-wrapper">
-                            <img src="{{ url_for('static', filename='photos/' + photos[i + j]) }}"
-                                 alt="Automotive Photography {{ i + j + 1 }}"
-                                 loading="{% if i == 0 and j == 0 %}eager{% else %}lazy{% endif %}">
+                            <a href="{{ url_for('view_image', filename=photos[i + j]) }}">
+                                <img src="{{ url_for('static', filename='photos/' + photos[i + j]) }}"
+                                     alt="Automotive Photography {{ i + j + 1 }}"
+                                     loading="{% if i == 0 and j == 0 %}eager{% else %}lazy{% endif %}">
+                            </a>
                         </div>
                         {% endif %}
                     {% endfor %}
@@ -40,12 +42,12 @@
             </div>
 
             <div class="controls">
-                <button class="arrow-button prev" aria-label="Previous" id="prevButton"> <!-- Added IDs -->
+                <button class="arrow-button prev" aria-label="Previous" id="prevButton">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"/>
                     </svg>
                 </button>
-                <button class="arrow-button next" aria-label="Next" id="nextButton"> <!-- Added IDs -->
+                <button class="arrow-button next" aria-label="Next" id="nextButton">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6"/>
                     </svg>
