@@ -1,5 +1,8 @@
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, request, abort
 import os
+
+# Define environment detection
+IS_DEVELOPMENT = os.environ.get('FLASK_ENV') == 'development'
 
 app = Flask(__name__)
 
@@ -27,11 +30,21 @@ def view_image(filename):
 def get_photo(filename):
     return send_from_directory(os.path.join(app.static_folder, 'photos'), filename)
 
-# Debug route to check environment variables
+# Debug route to check environment variables - only available in development
 @app.route('/debug')
 def debug():
+    # Return 404 in production to hide this route
+    if not IS_DEVELOPMENT:
+        abort(404)
+    
     # Get Web3Forms key from environment variable
     web3forms_key = os.environ.get('WEB3FORMS_KEY', '')
+    
+    # Only show the first 5 characters in development for security
+    if web3forms_key:
+        masked_key = web3forms_key[:5] + '***' if len(web3forms_key) > 5 else '***'
+    else:
+        masked_key = ''
     
     # Check if a form on the page has the access_key filled in
     access_key_in_form = request.args.get('access_key', '')
@@ -40,11 +53,14 @@ def debug():
     env_vars = {}
     for key, value in os.environ.items():
         # Skip sensitive environment variables 
-        if not key.lower().startswith(('secret_', 'api_', 'password', 'token')):
+        if not key.lower().startswith(('secret_', 'api_', 'password', 'token', 'key')):
             env_vars[key] = value
+        # For sensitive keys, only show the first few characters
+        elif key.lower() == 'web3forms_key' and value:
+            env_vars[key] = value[:5] + '***' if len(value) > 5 else '***'
     
     return render_template('debug.html', 
-                          web3forms_key=web3forms_key,
+                          web3forms_key=masked_key,
                           access_key_in_form=access_key_in_form,
                           env_vars=env_vars)
 
@@ -53,4 +69,4 @@ app.config['STATIC_FOLDER'] = 'static'
 
 # For local development only
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=IS_DEVELOPMENT)
