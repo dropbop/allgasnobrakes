@@ -1,5 +1,6 @@
 // script.js
 document.addEventListener('DOMContentLoaded', function() {
+    // ================= CAROUSEL CODE =================
     const carousel = document.querySelector('.carousel');
     const imageGroups = document.querySelectorAll('.image-trio');
     let currentIndex = 0;
@@ -62,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
         startAutoScroll(); // Start auto-scroll on initialization
     }
 
-
     function updateCarousel(animate = true) {
         if (!animate) {
             carousel.style.transition = 'none';
@@ -123,34 +123,100 @@ document.addEventListener('DOMContentLoaded', function() {
         interactionTimeout = setTimeout(startAutoScroll, resumeAutoScrollDelay);
     }
 
-    prevButton.addEventListener('click', () => {
-        prevTrio();
-        resetAutoScrollTimer();
-    });
+    if (prevButton && nextButton) {
+        prevButton.addEventListener('click', () => {
+            prevTrio();
+            resetAutoScrollTimer();
+        });
 
-    nextButton.addEventListener('click', () => {
-        nextTrio();
-        resetAutoScrollTimer();
-    });
+        nextButton.addEventListener('click', () => {
+            nextTrio();
+            resetAutoScrollTimer();
+        });
+    }
 
-    let touchStartX = 0;
-    carousel.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-        resetAutoScrollTimer();
-    });
+    if (carousel) {
+        let touchStartX = 0;
+        carousel.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            resetAutoScrollTimer();
+        });
 
-    carousel.addEventListener('touchend', e => {
-        const touchEndX = e.changedTouches[0].screenX;
-        if (touchStartX - touchEndX > 50) nextTrio();
-        else if (touchEndX - touchStartX > 50) prevTrio();
-        resetAutoScrollTimer();
-    });
+        carousel.addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) nextTrio();
+            else if (touchEndX - touchStartX > 50) prevTrio();
+            resetAutoScrollTimer();
+        });
 
-    // Call preloadImages BEFORE initCarousel to start preloading immediately
-    preloadImages();
-    initCarousel();
+        // Make sure links in carousel work properly
+        const imageLinks = document.querySelectorAll('.image-wrapper a');
+        imageLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Don't intercept link clicks for navigation
+                e.stopPropagation();
+            });
+        });
+
+        // Call preloadImages BEFORE initCarousel to start preloading immediately
+        preloadImages();
+        initCarousel();
+    }
 
     window.addEventListener('resize', () => {
-        initCarousel();
+        if (carousel) {
+            initCarousel();
+        }
     });
+
+    // ================= CONTACT FORM CODE =================
+    const contactForm = document.getElementById('contactForm');
+    const formResult = document.getElementById('formResult');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
+            
+            // Show pending message
+            formResult.textContent = "Sending your message...";
+            formResult.className = "form-result pending";
+            formResult.style.display = "block";
+            
+            const formData = new FormData(contactForm);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+            
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                    formResult.textContent = "Message sent successfully!";
+                    formResult.className = "form-result success";
+                } else {
+                    console.log(response);
+                    formResult.textContent = json.message || "Something went wrong!";
+                    formResult.className = "form-result error";
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                formResult.textContent = "Something went wrong. Please try again.";
+                formResult.className = "form-result error";
+            })
+            .finally(function() {
+                contactForm.reset();
+                // Hide the message after 5 seconds
+                setTimeout(() => {
+                    formResult.style.display = "none";
+                }, 5000);
+            });
+        });
+    }
 });
