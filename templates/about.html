@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}About - AllGasNoBrakes Photography{% endblock %}
+
+{% block head %}
+<meta name="description" content="Learn about the passion and artistry behind AllGasNoBrakes Photography - professional automotive photography with a focus on capturing automotive excellence">
+<meta property="og:title" content="About AllGasNoBrakes Photography">
+<meta property="og:description" content="Professional automotive photographer passionate about capturing the essence of automotive excellence">
+<meta property="og:type" content="website">
+{% endblock %}
+
+{% block body %}
+<header class="main-nav">
+    <div class="nav-content">
+        <a href="{{ url_for('index') }}" class="logo">
+            <h1 class="site-title">AllGasNoBrakes</h1>
+        </a>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('about') }}" class="nav-link active">About</a>
+            <a href="{{ url_for('portfolio') }}" class="nav-link">Portfolio</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+        </nav>
+        <div class="nav-cta">
+            <a href="#" class="cta-button" id="bookingBtn">Book Session</a>
+        </div>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <nav class="mobile-nav-links">
+                <a href="{{ url_for('index') }}" class="mobile-nav-link">Home</a>
+                <a href="{{ url_for('about') }}" class="mobile-nav-link active">About</a>
+                <a href="{{ url_for('portfolio') }}" class="mobile-nav-link">Portfolio</a>
+                <a href="{{ url_for('contact') }}" class="mobile-nav-link">Contact</a>
+            </nav>
+            <div class="mobile-nav-cta">
+                <a href="#" class="mobile-cta-button" id="mobileBookingBtn">Book Session</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="about-page">
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="about-hero-content">
+            <h1 class="page-title">About AllGasNoBrakes</h1>
+            <p class="page-subtitle">Where passion meets precision in automotive photography</p>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section">
+        <div class="section-container">
+            <div class="story-content">
+                <div class="story-text">
+                    <h2 class="section-title">The Story Behind the Lens</h2>
+                    <div class="story-paragraphs">
+                        <p>
+                            Born from a lifelong passion for automotive excellence, AllGasNoBrakes represents more than just photography—it's an obsession with capturing the soul of every machine that crosses our lens.
+                        </p>
+                        <p>
+                            Every vehicle has a story to tell, from the gentle curves of a classic sports car to the aggressive lines of a modern supercar. Our mission is to translate that story into visual poetry, preserving moments of automotive artistry that inspire and captivate.
+                        </p>
+                        <p>
+                            With years of experience in automotive photography, we've developed a unique approach that combines technical expertise with artistic vision, ensuring every shot captures not just the vehicle, but the emotion and passion it represents.
+                        </p>
+                    </div>
+                </div>
+                <div class="story-image">
+                    <img src="{{ url_for('get_photo', variant='desktop', filename='about_me_photo_AGNB.JPG') }}"
+                         alt="AllGasNoBrakes photographer behind the scenes"
+                         loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section class="approach-section">
+        <div class="section-container">
+            <h2 class="section-title">Our Approach</h2>
+            <div class="approach-grid">
+                <div class="approach-item">
+                    <div class="approach-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6m0 6v6"/>
+                            <path d="m15.5 3.5-1.4 1.4m0 11.2 1.4 1.4"/>
+                            <path d="m8.5 3.5 1.4 1.4m0 11.2-1.4 1.4"/>
+                            <path d="m1 12 6 0m6 0 6 0"/>
+                        </svg>
+                    </div>
+                    <h3>Precision</h3>
+                    <p>Every shot is meticulously planned and executed with technical excellence, ensuring perfect lighting, composition, and detail.</p>
+                </div>
+                <div class="approach-item">
+                    <div class="approach-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L3 7l9 5 9-5-9-5z"/>
+                            <path d="M3 17l9 5 9-5"/>
+                            <path d="M3 12l9 5 9-5"/>
+                        </svg>
+                    </div>
+                    <h3>Artistry</h3>
+                    <p>We don't just document vehicles—we create art that celebrates the design, engineering, and passion behind every machine.</p>
+                </div>
+                <div class="approach-item">
+                    <div class="approach-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </div>
+                    <h3>Passion</h3>
+                    <p>Our genuine love for automotive culture drives us to go beyond expectations, capturing moments that resonate with fellow enthusiasts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="section-container">
+            <h2 class="section-title">The Creative Process</h2>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Consultation</h3>
+                        <p>We begin with understanding your vision, the vehicle's story, and the emotion you want to capture.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Location & Planning</h3>
+                        <p>Careful selection of locations and lighting conditions that complement your vehicle's character.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Photography Session</h3>
+                        <p>Professional shooting with attention to every detail, capturing multiple angles and perspectives.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Post-Production</h3>
+                        <p>Expert editing and retouching to enhance the natural beauty while maintaining authenticity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="about-cta">
+        <div class="section-container">
+            <div class="cta-content">
+                <h2>Ready to Tell Your Story?</h2>
+                <p>Let's collaborate to create automotive photography that captures the true spirit of your vehicle.</p>
+                <div class="cta-actions">
+                    <a href="#" class="btn-primary" id="aboutBookingBtn">Start Your Project</a>
+                    <a href="{{ url_for('portfolio') }}" class="btn-outline">View Our Work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>AllGasNoBrakes</h3>
+                <p>Professional Automotive Photography</p>
+            </div>
+            <div class="footer-links">
+                <a href="mailto:AllGasNoBrakes@tuta.com" class="footer-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                        <path d="m3 7 9 6 9-6"></path>
+                    </svg>
+                    Email
+                </a>
+                <a href="https://instagram.com/AllGasNoBrakesMedia" target="_blank" rel="noopener noreferrer" class="footer-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="4.5"></rect>
+                        <circle cx="12" cy="12" r="3.5"></circle>
+                        <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" stroke="none"></circle>
+                    </svg>
+                    Instagram
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AllGasNoBrakes Photography. All rights reserved.</p>
+        </div>
+    </footer>
+</main>
+{% endblock %}

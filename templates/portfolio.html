@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio - AllGasNoBrakes Photography{% endblock %}
+
+{% block head %}
+<meta name="description" content="Explore the portfolio of AllGasNoBrakes Photography - professional automotive photography showcasing cars, supercars, and automotive artistry">
+<meta property="og:title" content="Portfolio - AllGasNoBrakes Photography">
+<meta property="og:description" content="Professional automotive photography portfolio featuring stunning car photography">
+<meta property="og:type" content="website">
+{% endblock %}
+
+{% block body %}
+<header class="main-nav">
+    <div class="nav-content">
+        <a href="{{ url_for('index') }}" class="logo">
+            <h1 class="site-title">AllGasNoBrakes</h1>
+        </a>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('about') }}" class="nav-link">About</a>
+            <a href="{{ url_for('portfolio') }}" class="nav-link active">Portfolio</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+        </nav>
+        <div class="nav-cta">
+            <a href="#" class="cta-button" id="bookingBtn">Book Session</a>
+        </div>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <nav class="mobile-nav-links">
+                <a href="{{ url_for('index') }}" class="mobile-nav-link">Home</a>
+                <a href="{{ url_for('about') }}" class="mobile-nav-link">About</a>
+                <a href="{{ url_for('portfolio') }}" class="mobile-nav-link active">Portfolio</a>
+                <a href="{{ url_for('contact') }}" class="mobile-nav-link">Contact</a>
+            </nav>
+            <div class="mobile-nav-cta">
+                <a href="#" class="mobile-cta-button" id="mobileBookingBtn">Book Session</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="portfolio-page">
+    <!-- Hero Section -->
+    <section class="portfolio-hero">
+        <div class="portfolio-hero-content">
+            <h1 class="page-title">Portfolio</h1>
+            <p class="page-subtitle">A collection of automotive photography that captures the essence of speed, style, and engineering excellence</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="portfolio-filters">
+        <div class="section-container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Work</button>
+                <button class="filter-btn" data-filter="supercars">Supercars</button>
+                <button class="filter-btn" data-filter="classic">Classic Cars</button>
+                <button class="filter-btn" data-filter="sports">Sports Cars</button>
+                <button class="filter-btn" data-filter="studio">Studio</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="portfolio-gallery">
+        <div class="section-container">
+            <div class="gallery-grid" id="portfolioGrid">
+                {% for photo in desktop_photos %}
+                <div class="gallery-item" data-category="supercars">
+                    <a href="{{ url_for('view_image', variant='desktop', filename=photo) }}?from=portfolio" class="gallery-link">
+                        <div class="gallery-image">
+                            <img src="{{ url_for('get_photo', variant='desktop', filename=photo) }}"
+                                 alt="Professional automotive photography - {{ photo }}"
+                                 loading="{{ 'eager' if loop.index0 < 6 else 'lazy' }}">
+                            <div class="gallery-overlay">
+                                <div class="overlay-content">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <polyline points="9 21 3 21 3 15"></polyline>
+                                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                                    </svg>
+                                    <span>View Full Size</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-section">
+                <button class="btn-outline" id="loadMoreBtn">Load More Images</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Project Section -->
+    <section class="featured-project">
+        <div class="section-container">
+            <div class="project-content">
+                <div class="project-text">
+                    <h2 class="section-title">Featured Project</h2>
+                    <h3 class="project-title">Ferrari 812 Superfast</h3>
+                    <p class="project-description">
+                        A comprehensive automotive photography session capturing the raw power and elegant design of the Ferrari 812 Superfast.
+                        This project showcased the vehicle's aggressive lines and sophisticated engineering through a series of dynamic shots
+                        in urban and natural environments.
+                    </p>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">Tokyo, Japan</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Style:</span>
+                            <span class="detail-value">Urban Automotive</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Year:</span>
+                            <span class="detail-value">2024</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-image">
+                    {% if desktop_photos %}
+                    <img src="{{ url_for('get_photo', variant='desktop', filename=desktop_photos[0]) }}"
+                         alt="Featured project - Ferrari 812 Superfast photography"
+                         loading="lazy">
+                    {% else %}
+                    <div class="image-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21,15 16,10 5,21"/>
+                        </svg>
+                        <p>Featured project image</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider Section -->
+    <section class="portfolio-divider">
+        <div class="section-container">
+            <div class="divider-line"></div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="portfolio-cta">
+        <div class="section-container">
+            <div class="cta-content">
+                <h2>Ready to Showcase Your Vehicle?</h2>
+                <p>Let's create stunning photography that captures the unique character and beauty of your automotive passion.</p>
+                <div class="cta-actions">
+                    <a href="#" class="btn-primary" id="portfolioBookingBtn">Book Your Session</a>
+                    <a href="{{ url_for('contact') }}" class="btn-outline">Discuss Your Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>AllGasNoBrakes</h3>
+                <p>Professional Automotive Photography</p>
+            </div>
+            <div class="footer-links">
+                <a href="mailto:AllGasNoBrakes@tuta.com" class="footer-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                        <path d="m3 7 9 6 9-6"></path>
+                    </svg>
+                    Email
+                </a>
+                <a href="https://instagram.com/AllGasNoBrakesMedia" target="_blank" rel="noopener noreferrer" class="footer-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="4.5"></rect>
+                        <circle cx="12" cy="12" r="3.5"></circle>
+                        <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" stroke="none"></circle>
+                    </svg>
+                    Instagram
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AllGasNoBrakes Photography. All rights reserved.</p>
+        </div>
+    </footer>
+</main>
+{% endblock %}
