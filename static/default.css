@@ -1212,6 +1212,15 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
         text-overflow: ellipsis;
     }
 
+    /* Specific fix for About page title */
+    .about-page-title {
+        font-size: 1.4rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: 0 !important;
+    }
+
     .hero-title {
         font-size: 2.4rem !important;
         line-height: 0.95;
@@ -1252,6 +1261,15 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    /* Ultra-aggressive fix for About page title on tiny screens */
+    .about-page-title {
+        font-size: 1.2rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: -0.02em !important;
     }
 
     .hero-title {
