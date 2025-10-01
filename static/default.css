@@ -1188,6 +1188,20 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
     }
 }
 
+/* iPhone specific fix for About page header */
+@media (max-width: 414px) {
+    .about-page-title {
+        font-size: 0.85rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: -0.12em !important;
+        transform: scaleX(0.75) !important;
+        transform-origin: left !important;
+        word-spacing: -0.3em !important;
+    }
+}
+
 /* Ultra Small Mobile Styles for very tiny screens */
 @media (max-width: 375px) {
     .about-hero,
