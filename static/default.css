@@ -1214,11 +1214,13 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
 
     /* Specific fix for About page title */
     .about-page-title {
-        font-size: 1.4rem !important;
+        font-size: 1.2rem !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        letter-spacing: 0 !important;
+        letter-spacing: -0.05em !important;
+        transform: scaleX(0.9) !important;
+        transform-origin: left !important;
     }
 
     .hero-title {
@@ -1265,11 +1267,13 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
 
     /* Ultra-aggressive fix for About page title on tiny screens */
     .about-page-title {
-        font-size: 1.2rem !important;
+        font-size: 1.0rem !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        letter-spacing: -0.02em !important;
+        letter-spacing: -0.08em !important;
+        transform: scaleX(0.85) !important;
+        transform-origin: left !important;
     }
 
     .hero-title {
