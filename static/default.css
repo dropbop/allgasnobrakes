@@ -1202,11 +1202,14 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
 
     /* Typography fixes for 375px and below */
     .page-title {
-        font-size: 2rem !important;
-        line-height: 1.1;
-        letter-spacing: 0.02em;
+        font-size: 1.7rem !important;
+        line-height: 1.05;
+        letter-spacing: 0.01em;
         word-break: break-word;
         hyphens: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .hero-title {
@@ -1241,11 +1244,14 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
 @media (max-width: 320px) {
     /* Even more aggressive typography for 320px and below */
     .page-title {
-        font-size: 1.8rem !important;
-        line-height: 1.1;
+        font-size: 1.5rem !important;
+        line-height: 1.0;
         word-break: break-word;
         hyphens: auto;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .hero-title {
