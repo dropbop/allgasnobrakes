@@ -1188,14 +1188,12 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
     }
 }
 
-/* iPhone specific fix for About page header - clean approach */
+/* iPhone specific fix for About page header - match other pages */
 @media (max-width: 414px) {
     .about-page-title {
-        font-size: 1.6rem !important;
-        line-height: 1.2;
-        letter-spacing: normal !important;
-        word-spacing: normal !important;
-        white-space: normal !important;
+        font-size: 1.9rem !important;
+        line-height: 1.15;
+        letter-spacing: 0.02em !important;
     }
 }
 
@@ -1223,13 +1221,11 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
         text-overflow: ellipsis;
     }
 
-    /* Specific fix for About page title */
+    /* Specific fix for About page title - match other page headers */
     .about-page-title {
-        font-size: 1.5rem !important;
-        line-height: 1.2;
-        letter-spacing: normal !important;
-        word-spacing: normal !important;
-        white-space: normal !important;
+        font-size: 1.7rem !important;
+        line-height: 1.1;
+        letter-spacing: 0.01em !important;
     }
 
     .hero-title {
@@ -1274,13 +1270,11 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
         text-overflow: ellipsis;
     }
 
-    /* Clean fix for About page title on tiny screens */
+    /* Fix for About page title on tiny screens - match other pages */
     .about-page-title {
-        font-size: 1.3rem !important;
-        line-height: 1.2;
-        letter-spacing: normal !important;
-        word-spacing: normal !important;
-        white-space: normal !important;
+        font-size: 1.5rem !important;
+        line-height: 1.1;
+        letter-spacing: 0.01em !important;
     }
 
     .hero-title {
