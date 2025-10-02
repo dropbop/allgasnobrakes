@@ -1188,17 +1188,14 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
     }
 }
 
-/* iPhone specific fix for About page header */
+/* iPhone specific fix for About page header - clean approach */
 @media (max-width: 414px) {
     .about-page-title {
-        font-size: 1.1rem !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        letter-spacing: -0.05em !important;
-        transform: scaleX(0.88) !important;
-        transform-origin: left !important;
-        word-spacing: -0.1em !important;
+        font-size: 1.6rem !important;
+        line-height: 1.2;
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+        white-space: normal !important;
     }
 }
 
@@ -1228,13 +1225,11 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
 
     /* Specific fix for About page title */
     .about-page-title {
-        font-size: 1.2rem !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        letter-spacing: -0.05em !important;
-        transform: scaleX(0.9) !important;
-        transform-origin: left !important;
+        font-size: 1.5rem !important;
+        line-height: 1.2;
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+        white-space: normal !important;
     }
 
     .hero-title {
@@ -1279,15 +1274,13 @@ nav a:hover { background: var(--color-accent); transform: translateX(-10px); }
         text-overflow: ellipsis;
     }
 
-    /* Ultra-aggressive fix for About page title on tiny screens */
+    /* Clean fix for About page title on tiny screens */
     .about-page-title {
-        font-size: 1.0rem !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        letter-spacing: -0.08em !important;
-        transform: scaleX(0.85) !important;
-        transform-origin: left !important;
+        font-size: 1.3rem !important;
+        line-height: 1.2;
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+        white-space: normal !important;
     }
 
     .hero-title {
