@@ -100,11 +100,12 @@
         <!-- MOBILE EXPERIENCE (server-rendered so phones see images even without JS). -->
         <div id="mobile-gallery" class="mobile-gallery">
             <div class="mobile-list" aria-live="polite">
-                {% for f in mobile_photos %}
+                {% for photo in mobile_photos %}
+                  {% set filename = photo[0] if photo is sequence and photo|length == 2 else photo %}
                   <a class="mobile-card"
-                     href="{{ url_for('view_image', variant='mobile', filename=f) }}?from=index">
+                     href="{{ url_for('view_image', variant='mobile', filename=filename) }}?from=index">
                     <img
-                      src="{{ url_for('get_photo', variant='mobile', filename=f) }}"
+                      src="{{ url_for('get_photo', variant='mobile', filename=filename) }}"
                       alt="Professional automotive photography - Photo {{ loop.index }}"
                       loading="{{ 'eager' if loop.index0 < 2 else 'lazy' }}"
                       decoding="async">

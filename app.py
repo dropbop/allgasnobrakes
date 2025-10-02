@@ -20,8 +20,23 @@ def page_not_found(e):
 
 PHOTO_BASE = os.path.join(app.static_folder, 'photos')
 
-def list_photos(variant: str, exclude_about=True):
-    """Return sorted filenames for the variant's folder."""
+def get_photo_category(filename):
+    """Extract category from filename.
+    Format: category-001-description.jpg
+    Returns 'all' if no category prefix found."""
+    categories = ['supercars', 'classic', 'sports', 'studio']
+    filename_lower = filename.lower()
+
+    for category in categories:
+        if filename_lower.startswith(category + '-') or filename_lower.startswith(category + '_'):
+            return category
+
+    # Default category if no prefix found
+    return 'all'
+
+def list_photos(variant: str, exclude_about=True, with_categories=False):
+    """Return sorted filenames for the variant's folder.
+    If with_categories=True, returns list of (filename, category) tuples."""
     folder = os.path.join(PHOTO_BASE, variant)
     if not os.path.isdir(folder):
         return []
@@ -35,6 +50,9 @@ def list_photos(variant: str, exclude_about=True):
         files = [f for f in files if 'about_me' not in f.lower()]
 
     files.sort()
+
+    if with_categories:
+        return [(f, get_photo_category(f)) for f in files]
     return files
 
 @app.route('/')
@@ -52,8 +70,8 @@ def about():
 @app.route('/portfolio')
 def portfolio():
     """Portfolio page with categorized photo galleries."""
-    desktop_photos = list_photos('desktop', exclude_about=True)
-    mobile_photos = list_photos('mobile', exclude_about=True)
+    desktop_photos = list_photos('desktop', exclude_about=True, with_categories=True)
+    mobile_photos = list_photos('mobile', exclude_about=True, with_categories=True)
     return render_template('portfolio.html',
                            desktop_photos=desktop_photos,
                            mobile_photos=mobile_photos)

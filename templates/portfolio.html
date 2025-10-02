@@ -73,8 +73,8 @@
     <section class="portfolio-gallery">
         <div class="section-container">
             <div class="gallery-grid" id="portfolioGrid">
-                {% for photo in desktop_photos %}
-                <div class="gallery-item" data-category="supercars">
+                {% for photo, category in desktop_photos %}
+                <div class="gallery-item" data-category="{{ category }}">
                     <a href="{{ url_for('view_image', variant='desktop', filename=photo) }}?from=portfolio" class="gallery-link">
                         <div class="gallery-image">
                             <img src="{{ url_for('get_photo', variant='desktop', filename=photo) }}"

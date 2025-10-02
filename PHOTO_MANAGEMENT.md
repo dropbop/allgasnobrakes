@@ -7,6 +7,11 @@ To add or update photos on the website, you'll be working with two folders in th
 
 The website automatically displays all photos from these folders - no coding required!
 
+### 🎯 Key Features:
+- **Automatic carousel** on home page (first photos in each folder)
+- **Category filtering** on portfolio page (supercars, classic, sports, studio)
+- **Alphabetical sorting** by filename
+
 ---
 
 ## Photo Directory Structure
@@ -68,23 +73,37 @@ static/
 
 ## Photo Naming Convention
 
-### Recommended Format:
+### Standard Format (No Category):
 ```
 Desktop: [number]-[description]-[location].jpg
 Mobile:  [number]-[description]-mobile.jpg
 ```
 
+### Category Format (For Portfolio Filtering):
+```
+Desktop: [category]-[number]-[description].jpg
+Mobile:  [category]-[number]-[description]-mobile.jpg
+```
+
+### Available Categories:
+- `supercars` - Lamborghini, Ferrari, McLaren, etc.
+- `classic` - Vintage and classic cars
+- `sports` - Sports cars and performance vehicles
+- `studio` - Studio/indoor photography
+
 ### Examples:
-- `001-ferrari812-Tokyo.jpg` (desktop)
-- `001-ferrari812-mobile.jpg` (mobile)
-- `002-McLaren720s-Downtown.jpg` (desktop)
-- `002-mclaren720s-mobile.jpg` (mobile)
+- `supercars-001-ferrari812-Tokyo.jpg` (goes in Supercars category)
+- `classic-001-mustang67.jpg` (goes in Classic Cars category)
+- `sports-001-porsche911.jpg` (goes in Sports Cars category)
+- `studio-001-mclaren-indoor.jpg` (goes in Studio category)
+- `001-randomcar.jpg` (no category - shows in "All Work")
 
 ### Tips:
-- Use numbers (001, 002, 003) at the start to control display order
+- Use numbers (001, 002, 003) to control display order within categories
+- Category prefix must be exact: `supercars-`, `classic-`, `sports-`, or `studio-`
+- Photos without category prefix appear only when "All Work" is selected
 - Keep names descriptive but concise
 - Use hyphens (-) instead of spaces
-- Lowercase is recommended for consistency
 
 ---
 
@@ -125,6 +144,18 @@ Photos are displayed alphabetically by filename. To control the order:
 
 ## Common Tasks
 
+### ✅ Control Home Page Carousel:
+- **Desktop carousel**: Photos from `static/photos/desktop/` are loaded automatically
+- **Mobile carousel**: First 3-5 photos from `static/photos/mobile/` appear
+- **To change carousel photos**: Rename files so desired photos appear first alphabetically
+- Example: Rename to `001-featured-ferrari.jpg`, `002-featured-lambo.jpg`
+
+### ✅ Add photos with categories:
+1. Name file with category prefix: `supercars-001-ferrari.jpg`
+2. Upload to `static/photos/desktop/`
+3. Upload mobile version: `supercars-001-ferrari-mobile.jpg`
+4. Photo will appear in "Supercars" filter on portfolio page
+
 ### ✅ Add photos to portfolio:
 1. Upload to `static/photos/desktop/`
 2. Upload mobile version to `static/photos/mobile/`
@@ -153,9 +184,20 @@ Photos are displayed alphabetically by filename. To control the order:
 - Ensure the filename doesn't have special characters
 - Verify the photo is in the correct folder
 
+### Categories not working?
+- Category prefix must be exact: `supercars-`, `classic-`, `sports-`, or `studio-`
+- Include hyphen after category: `supercars-001` ✅ not `supercars001` ❌
+- Category must be lowercase
+
+### Carousel not updating?
+- The carousel shows the FIRST photos alphabetically
+- Rename your featured photos to start with lower numbers (001, 002)
+- Desktop and mobile carousels are separate - update both folders
+
 ### Photos in wrong order?
 - Check the filename starts with numbers
 - Rename files to change order
+- Remember: 001 comes before 010 which comes before 100
 
 ### Site not updating?
 - GitHub Pages can take 2-5 minutes to update
