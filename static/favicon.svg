@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <pattern id="checkerboard" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="2" height="2" fill="#000"/>
+      <rect x="2" y="2" width="2" height="2" fill="#000"/>
+      <rect x="0" y="2" width="2" height="2" fill="#fff"/>
+      <rect x="2" y="0" width="2" height="2" fill="#fff"/>
+    </pattern>
+  </defs>
+
+  <!-- Flag pole -->
+  <rect x="2" y="2" width="2" height="28" fill="#333"/>
+
+  <!-- Racing flag -->
+  <path d="M4 2 L28 8 L28 20 L4 14 Z" fill="url(#checkerboard)" stroke="#333" stroke-width="0.5"/>
+
+  <!-- Flag wave effect -->
+  <path d="M28 8 Q30 10 28 12 Q30 14 28 16 Q30 18 28 20" fill="none" stroke="#333" stroke-width="0.5"/>
+</svg>
