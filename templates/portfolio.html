@@ -133,7 +133,8 @@
                 </div>
                 <div class="project-image">
                     {% if desktop_photos %}
-                    <img src="{{ url_for('get_photo', variant='desktop', filename=desktop_photos[0]) }}"
+                    {% set first_photo = desktop_photos[0][0] if desktop_photos[0] is sequence and desktop_photos[0]|length == 2 else desktop_photos[0] %}
+                    <img src="{{ url_for('get_photo', variant='desktop', filename=first_photo) }}"
                          alt="Featured project - Ferrari 812 Superfast photography"
                          loading="lazy">
                     {% else %}
