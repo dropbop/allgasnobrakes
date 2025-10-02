@@ -10,6 +10,13 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.svg') }}">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:image" content="{{ url_for('static', filename='favicon.svg', _external=True) }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}AllGasNoBrakes Photography{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Professional automotive photography capturing speed, style, and precision{% endblock %}"
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap">
