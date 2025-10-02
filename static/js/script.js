@@ -737,11 +737,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (typeof Calendly !== 'undefined') {
                     // Replace with your actual Calendly URL
                     Calendly.initPopupWidget({
-                        url: 'https://calendly.com/allgasnobrakes-tuta/30min'
+                        url: 'https://calendly.com/allgasnobrakes-tuta/30min?back=1'
                     });
                 } else {
                     // Fallback to opening Calendly in new tab
-                    window.open('https://calendly.com/allgasnobrakes-tuta/30min', '_blank');
+                    window.open('https://calendly.com/allgasnobrakes-tuta/30min?back=1', '_blank');
                 }
             });
         });
